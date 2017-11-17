@@ -2,7 +2,7 @@
 
 Remove [YAML frontmatter](https://jekyllrb.com/docs/frontmatter/) from `.js` files before calling ESLint. Given the following file:
 
-```
+```js
 ---
 process: true
 ---
@@ -12,7 +12,7 @@ const cat = () => console.log('meow')
 
 This plugin removes the frontmatter and sends the remaining content to ESLint:
 
-```
+```js
 const cat = () => console.log('meow')
 ```
 
@@ -22,13 +22,13 @@ The use case for this plugin was JavaScript development for a site built with [J
 
 You'll first need to install [ESLint](http://eslint.org):
 
-```
+```bash
 $ npm i eslint --save-dev
 ```
 
 Next, install `eslint-plugin-frontmatter`:
 
-```
+```bash
 $ npm install eslint-plugin-frontmatter --save-dev
 ```
 
@@ -52,6 +52,6 @@ After adding this plugin, frontmatter will be removed from your JavaScript files
 
 To start the tests, run:
 
-```
+```bash
 npm run test
 ```

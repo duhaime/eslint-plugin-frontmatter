@@ -1,6 +1,6 @@
 {
-  "name": "eslint-plugin-remove-front-matter",
-  "version": "0.0.1",
+  "name": "eslint-plugin-frontmatter",
+  "version": "0.0.2",
   "description": "Remove YAML front matter from JS files before linting",
   "keywords": [
     "eslint",
