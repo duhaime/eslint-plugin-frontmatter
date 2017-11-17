@@ -1,5 +1,8 @@
 # eslint-plugin-frontmatter
 
+[![Build Status](https://travis-ci.org/duhaime/eslint-plugin-frontmatter.svg?branch=master)](https://travis-ci.org/duhaime/eslint-plugin-frontmatter)
+
+
 Remove [YAML frontmatter](https://jekyllrb.com/docs/frontmatter/) from `.js` files before calling ESLint. Given the following file:
 
 ```js
