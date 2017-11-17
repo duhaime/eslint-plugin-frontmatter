@@ -1,0 +1,50 @@
+var CLIEngine = require('eslint').CLIEngine;
+var plugin = require('../');
+var chai = require('chai');
+var should = chai.should();
+var assert = chai.assert;
+
+describe('Tests for frontmatter ESLint processor', function() {
+  
+  // Specify a sample input file
+  var sample = `
+    ---
+    process_with_jekyll: true
+    ---
+    
+    // We shouldn't remove this: ---
+    var plusOne = function(num) {
+      return num+1;
+    };
+  `
+
+  before(function() {
+    cli = new CLIEngine({
+      envs: ['browser'],
+      extensions: ['js'],
+      ignore: false,
+      rules: {
+        'no-console': 2,
+        'no-undef': 2,
+        'quotes': 2,
+        'spaced-comment': 2
+      },
+      useEslintrc: false
+    });
+    cli.addPlugin('frontmatter', plugin);
+  });
+
+  describe('the preprocess function', function() {
+    it('should remove frontmatter', function() {
+      var report = cli.executeOnText(sample, 'sample.js');
+      var processed = plugin['processors']['.js']['preprocess'](sample)
+      var tripleDashes = processed[0].split('---').length;
+      tripleDashes.should.equal(2);
+    });
+    it('should not raise a linting error', function() {
+      var report = cli.executeOnText(sample, 'sample.js');
+      var errors = report.results[0].messages;
+      errors.length.should.equal(0);
+    });
+  });
+});
