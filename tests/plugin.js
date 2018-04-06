@@ -1,22 +1,19 @@
 var CLIEngine = require('eslint').CLIEngine;
 var plugin = require('../');
 var chai = require('chai');
+var fs = require('fs');
+var path = require('path');
 var should = chai.should();
 var assert = chai.assert;
+
+function getFixturePath(relativePath) {
+  return path.normalize(path.join(__dirname, relativePath));
+}
 
 describe('Tests for frontmatter ESLint processor', function() {
   
   // Specify a sample input file
-  var sample = `
-    ---
-    process_with_jekyll: true
-    ---
-    
-    // We shouldn't remove this: ---
-    var plusOne = function(num) {
-      return num+1;
-    };
-  `
+  var sample = fs.readFileSync(getFixturePath("./fixtures/basic.js"), "utf8");
 
   before(function() {
     cli = new CLIEngine({
@@ -36,15 +33,33 @@ describe('Tests for frontmatter ESLint processor', function() {
 
   describe('the preprocess function', function() {
     it('should remove frontmatter', function() {
-      var report = cli.executeOnText(sample, 'sample.js');
       var processed = plugin['processors']['.js']['preprocess'](sample)
       var tripleDashes = processed[0].split('---').length;
       tripleDashes.should.equal(2);
     });
+
     it('should not raise a linting error', function() {
       var report = cli.executeOnText(sample, 'sample.js');
       var errors = report.results[0].messages;
       errors.length.should.equal(0);
+    });
+
+    it('should remove all frontmatter even if --- is present in frontmatter', function() {
+      debugger;
+      var withDashes = fs.readFileSync(getFixturePath("./fixtures/withDashesInFrontMatter.js"), "utf8");
+
+      var processed = plugin.processors['.js'].preprocess(withDashes);
+
+      processed[0].should.equal('var x;');
+    });
+
+    it('should not change JS even if --- present in code', function() {
+      debugger;
+      var dashesInCode = fs.readFileSync(getFixturePath("./fixtures/dashesInCode.js"), "utf8");
+
+      var processed = plugin.processors['.js'].preprocess(dashesInCode);
+
+      processed[0].should.equal('x --- y;');
     });
   });
 });
