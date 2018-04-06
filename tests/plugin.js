@@ -6,10 +6,14 @@ var path = require('path');
 var should = chai.should();
 var assert = chai.assert;
 
+function getFixturePath(relativePath) {
+  return path.normalize(path.join(__dirname, relativePath));
+}
+
 describe('Tests for frontmatter ESLint processor', function() {
   
   // Specify a sample input file
-  var sample = fs.readFileSync(path.normalize(path.join(__dirname, "./fixtures/basic.js")), "utf8");
+  var sample = fs.readFileSync(getFixturePath("./fixtures/basic.js"), "utf8");
 
   before(function() {
     cli = new CLIEngine({
@@ -33,10 +37,20 @@ describe('Tests for frontmatter ESLint processor', function() {
       var tripleDashes = processed[0].split('---').length;
       tripleDashes.should.equal(2);
     });
+
     it('should not raise a linting error', function() {
       var report = cli.executeOnText(sample, 'sample.js');
       var errors = report.results[0].messages;
       errors.length.should.equal(0);
+    });
+
+    it('should remove all frontmatter even if --- is present in frontmatter', function() {
+      debugger;
+      var withDashes = fs.readFileSync(getFixturePath("./fixtures/withDashesInFrontMatter.js"), "utf8");
+
+      var processed = plugin.processors['.js'].preprocess(withDashes);
+
+      processed[0].should.equal('var x;');
     });
   });
 });
