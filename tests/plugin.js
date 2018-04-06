@@ -36,7 +36,6 @@ describe('Tests for frontmatter ESLint processor', function() {
 
   describe('the preprocess function', function() {
     it('should remove frontmatter', function() {
-      var report = cli.executeOnText(sample, 'sample.js');
       var processed = plugin['processors']['.js']['preprocess'](sample)
       var tripleDashes = processed[0].split('---').length;
       tripleDashes.should.equal(2);
