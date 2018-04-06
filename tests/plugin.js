@@ -52,5 +52,14 @@ describe('Tests for frontmatter ESLint processor', function() {
 
       processed[0].should.equal('var x;');
     });
+
+    it('should not change JS even if --- present in code', function() {
+      debugger;
+      var dashesInCode = fs.readFileSync(getFixturePath("./fixtures/dashesInCode.js"), "utf8");
+
+      var processed = plugin.processors['.js'].preprocess(dashesInCode);
+
+      processed[0].should.equal('x --- y;');
+    });
   });
 });
