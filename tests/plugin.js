@@ -1,22 +1,15 @@
 var CLIEngine = require('eslint').CLIEngine;
 var plugin = require('../');
 var chai = require('chai');
+var fs = require('fs');
+var path = require('path');
 var should = chai.should();
 var assert = chai.assert;
 
 describe('Tests for frontmatter ESLint processor', function() {
   
   // Specify a sample input file
-  var sample = `
-    ---
-    process_with_jekyll: true
-    ---
-    
-    // We shouldn't remove this: ---
-    var plusOne = function(num) {
-      return num+1;
-    };
-  `
+  var sample = fs.readFileSync(path.normalize(path.join(__dirname, "./fixtures/basic.js")), "utf8");
 
   before(function() {
     cli = new CLIEngine({
