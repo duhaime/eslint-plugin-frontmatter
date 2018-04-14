@@ -45,7 +45,6 @@ describe('Tests for frontmatter ESLint processor', function() {
     });
 
     it('should remove all frontmatter even if --- is present in frontmatter', function() {
-      debugger;
       var withDashes = fs.readFileSync(getFixturePath("./fixtures/withDashesInFrontMatter.js"), "utf8");
 
       var processed = plugin.processors['.js'].preprocess(withDashes);
@@ -54,7 +53,6 @@ describe('Tests for frontmatter ESLint processor', function() {
     });
 
     it('should not change JS even if --- present in code', function() {
-      debugger;
       var dashesInCode = fs.readFileSync(getFixturePath("./fixtures/dashesInCode.js"), "utf8");
 
       var processed = plugin.processors['.js'].preprocess(dashesInCode);
